@@ -1,0 +1,14 @@
+// layouot breakpoints
+$break-narrow: 700px;
+$break-normal: 1100px;
+
+//colors
+$pad-red: #983732;
+$pad-grey: #414d67;
+$pad-dark-grey: #37353a;
+
+//shadows
+$glow-shadow-in: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #c5a9b7,
+	0 0 40px #c5a9b7, 0 0 50px #c5a9b7, 0 0 60px #c5a9b7, 0 0 70px #c5a9b7;
+$glow-shadow-out: 0 0 20px #fff, 0 0 30px #ffdced, 0 0 40px #ffdced,
+	0 0 50px #ffdced, 0 0 60px #ffdced, 0 0 70px #ffdced, 0 0 80px #ffdced;

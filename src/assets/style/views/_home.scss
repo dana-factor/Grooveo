@@ -1,0 +1,175 @@
+.home {
+	height: 100vh;
+	@include for-narrow-layout {
+	}
+	.panel {
+		width: 100%;
+		background-color: #26232b;
+		padding: 20px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		@include for-narrow-layout {
+			padding: 10px;
+		}
+		img {
+			filter: invert(1);
+			width: 80px;
+			border-radius: 50%;
+			border: double black 15px;
+			cursor: pointer;
+			&:not(:last-of-type) {
+				margin-right: 10px;
+			}
+			@include for-narrow-layout {
+				width: 80px;
+				border: double black 10px;
+				&:not(:last-of-type) {
+					margin-right: 5px;
+				}
+			}
+		}
+		h1 {
+			font-size: rem(90px);
+			margin: 0;
+			line-height: 1;
+			color: white;
+			letter-spacing: 10px;
+			@include for-narrow-layout {
+				letter-spacing: 5px;
+				font-size: rem(45px);
+			}
+		}
+	}
+	.pads-container {
+		width: fit-content;
+		margin: 50px auto 0;
+		background: #1616162e;
+		border-radius: 50%;
+		padding: 40px;
+		display: grid;
+		justify-items: center;
+		align-items: center;
+		grid-template: repeat(5, 85px) / repeat(5, 85px);
+		grid-template-areas:
+			'. . side1 . .'
+			'. main1 . main2 .'
+			'main3 . main4 . main5'
+			'. side2 . side4 .'
+			'. . side3 . .';
+		@include for-narrow-layout {
+			grid-template: repeat(4, 65px) / repeat(4, 65px);
+			margin: 20px auto 0;
+			padding: 30px;
+			grid-template-areas:
+				'. . side1 . .'
+				'. main1 . main2 .'
+				'main3 . main4 . main5'
+				'. side2 . side4 .'
+				'. . side3 . .';
+		}
+		.pad {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			box-shadow: 4px 4px 0 0 #999;
+			width: 100px;
+			height: 100px;
+			border-radius: 7px;
+			transform: rotate(45deg);
+			cursor: pointer;
+			.icon {
+				filter: invert(1);
+				height: 45px;
+				width: 45px;
+			}
+			> * {
+				transform: rotate(-45deg);
+			}
+			&.queued {
+				box-shadow: 2px 2px 0 0 #666;
+				transform: rotate(45deg) translateY(2px) translateX(2px);
+			}
+			&.playing {
+				animation: glow 1s ease-in-out infinite alternate;
+				transform: rotate(45deg) translateY(2px) translateX(2px);
+			}
+			@-webkit-keyframes glow {
+				from {
+					box-shadow: $glow-shadow-in;
+				}
+				to {
+					box-shadow: $glow-shadow-out;
+				}
+			}
+			@include for-narrow-layout {
+				width: 75px;
+				height: 75px;
+			}
+		}
+
+		.pad-0 {
+			grid-area: main1;
+			background-color: $pad-grey;
+		}
+		.pad-1 {
+			grid-area: main2;
+			background-color: $pad-grey;
+		}
+		.pad-2 {
+			grid-area: main3;
+			background-color: $pad-red;
+		}
+		.pad-3 {
+			grid-area: main4;
+			background-color: $pad-grey;
+		}
+		.pad-4 {
+			grid-area: main5;
+			background-color: $pad-red;
+		}
+		.pad-5 {
+			grid-area: side1;
+			background-color: $pad-dark-grey;
+		}
+		.pad-6 {
+			grid-area: side2;
+			background-color: $pad-dark-grey;
+		}
+		.pad-7 {
+			grid-area: side3;
+			background-color: $pad-dark-grey;
+		}
+		.pad-8 {
+			grid-area: side4;
+			background-color: $pad-dark-grey;
+		}
+	}
+	.recorder {
+		position: absolute;
+		left: 0;
+		bottom: 0;
+		max-width: 400px;
+		// @include for-narrow-layout {
+		// 	position: static;
+		// 	margin: 10px auto 0;
+		// }
+		@include for-normal-layout {
+			position: static;
+			margin: 10px auto 0;
+		}
+	}
+	.illustration {
+		height: 75vh;
+		position: absolute;
+		z-index: -1;
+		bottom: 0;
+		right: 0;
+		@include for-narrow-layout {
+			height: 250px;
+		}
+		@include for-normal-layout {
+			height: 400px;
+		}
+	}
+}
