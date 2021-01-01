@@ -22,7 +22,7 @@
 				margin-right: 10px;
 			}
 			@include for-narrow-layout {
-				width: 80px;
+				width: 45px;
 				border: double black 10px;
 				&:not(:last-of-type) {
 					margin-right: 5px;
@@ -34,17 +34,17 @@
 			margin: 0;
 			line-height: 1;
 			color: white;
-			letter-spacing: 10px;
+			letter-spacing: rem(10px);
 			@include for-narrow-layout {
-				letter-spacing: 5px;
-				font-size: rem(45px);
+				letter-spacing: rem(5px);
+				font-size: rem(50px);
 			}
 		}
 	}
 	.pads-container {
 		width: fit-content;
 		margin: 50px auto 0;
-		background: #1616162e;
+		background: #1616164f;
 		border-radius: 50%;
 		padding: 40px;
 		display: grid;
@@ -58,7 +58,7 @@
 			'. side2 . side4 .'
 			'. . side3 . .';
 		@include for-narrow-layout {
-			grid-template: repeat(4, 65px) / repeat(4, 65px);
+			grid-template: repeat(4, 55px) / repeat(4, 55px);
 			margin: 20px auto 0;
 			padding: 30px;
 			grid-template-areas:
@@ -103,8 +103,8 @@
 				}
 			}
 			@include for-narrow-layout {
-				width: 75px;
-				height: 75px;
+				width: 65px;
+				height: 65px;
 			}
 		}
 
@@ -150,10 +150,6 @@
 		left: 0;
 		bottom: 0;
 		max-width: 400px;
-		// @include for-narrow-layout {
-		// 	position: static;
-		// 	margin: 10px auto 0;
-		// }
 		@include for-normal-layout {
 			position: static;
 			margin: 10px auto 0;
@@ -165,11 +161,11 @@
 		z-index: -1;
 		bottom: 0;
 		right: 0;
-		@include for-narrow-layout {
-			height: 250px;
-		}
 		@include for-normal-layout {
 			height: 400px;
+		}
+		@include for-narrow-layout {
+			height: 250px;
 		}
 	}
 }
