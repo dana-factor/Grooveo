@@ -1,7 +1,7 @@
 <template>
 	<main class="home">
 		<section class="panel">
-			<h1>GR</h1>
+			<h2>GR</h2>
 			<img src="@/assets/img/stop.svg" alt="Stop" @click="stopSounds()" />
 			<img
 				v-if="isMusicPaused"
@@ -15,7 +15,7 @@
 				alt="Pause"
 				@click="pauseSounds()"
 			/>
-			<h1>VE</h1>
+			<h2>VE</h2>
 			<img
 				src="@/assets/img/microphone.svg"
 				alt="Play"
