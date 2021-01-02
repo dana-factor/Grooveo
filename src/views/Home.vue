@@ -122,9 +122,7 @@ export default {
 				);
 				if (queuedSoundIndex !== -1) {
 					this.setNewLeader(this.sounds[queuedSoundIndex]);
-				} // else {
-				// 	this.isMusicPlaying = false;
-				// }
+				}
 			}
 		},
 		releaseQueueOnEnd(audio) {
