@@ -2,32 +2,18 @@
 	<main class="home">
 		<section class="panel">
 			<h1>GR</h1>
+			<img src="@/assets/img/stop.svg" alt="Stop" @click="stopSounds()" />
 			<img
-				src="@/assets/img/stop.svg"
-				alt="Stop"
-				@click="
-					stopSounds();
-					isStoped = !isStoped;
-					isPaused = false;
-				"
-			/>
-			<img
-				v-if="isPaused"
+				v-if="isMusicPaused"
 				src="@/assets/img/play.svg"
 				alt="Play"
-				@click="
-					playSounds();
-					isPaused = false;
-				"
+				@click="playSounds()"
 			/>
 			<img
-				v-if="!isPaused"
+				v-if="!isMusicPaused"
 				src="@/assets/img/pause.svg"
 				alt="Pause"
-				@click="
-					pauseSounds();
-					isPaused = true;
-				"
+				@click="pauseSounds()"
 			/>
 			<h1>VE</h1>
 			<img
@@ -66,8 +52,8 @@ export default {
 	data() {
 		return {
 			sounds,
-			isPaused: false,
-			isStoped: false,
+			isMusicPaused: false,
+			isMusicPlaying: false,
 			showRecorder: false,
 		};
 	},
@@ -79,36 +65,34 @@ export default {
 			this.sounds.forEach((sound, key) => {
 				this.stopAudio(key);
 			});
-			this.isPlayDisabled = true;
+			if (this.isMusicPaused) this.isMusicPaused = false;
 		},
 		pauseSounds() {
+			if (!this.isMusicPlaying) return;
 			this.sounds.map((sound) => {
-				//In case we want to unqueu on stop:
+				//In case we want to unqueu on pause:
 				// sound.isQueued = false;
 				if (sound.isPlaying) {
 					sound.audio.pause();
 					sound.isPlaying = false;
 				}
-				this.isPlayDisabled = false;
 			});
+			this.isMusicPaused = true;
+			this.isMusicPlaying = false;
 		},
 		playSounds() {
 			this.sounds.map((sound) => {
 				if (sound.audio.currentTime !== 0) {
 					sound.audio.play();
 					sound.isPlaying = true;
+					if (!this.isMusicPlaying) this.isMusicPlaying = true;
 				}
-				this.isPlayDisabled = true;
 			});
+			this.isMusicPaused = false;
 		},
 		statusClass(sound) {
 			if (sound.isPlaying) return "playing";
 			if (sound.isQueued) return "queued";
-		},
-		replayOnEnd(audio) {
-			audio.addEventListener("ended", () => {
-				audio.play();
-			});
 		},
 		playQueuedSounds() {
 			this.sounds = this.sounds.map((sound) => {
@@ -117,12 +101,14 @@ export default {
 					sound.isPlaying = true;
 					sound.audio.play();
 					this.replayOnEnd(sound.audio);
+					if (!this.isMusicPlaying) this.isMusicPlaying = true;
 				}
 				return sound;
 			});
 		},
 		setNewLeader(sound) {
 			sound.isLeader = true;
+			console.log("new leader set:", sound.title);
 			this.releaseQueueOnEnd(sound.audio);
 		},
 		findNewLeader() {
@@ -137,7 +123,9 @@ export default {
 				);
 				if (queuedSoundIndex !== -1) {
 					this.setNewLeader(this.sounds[queuedSoundIndex]);
-				}
+				} // else {
+				// 	this.isMusicPlaying = false;
+				// }
 			}
 		},
 		releaseQueueOnEnd(audio) {
@@ -146,19 +134,10 @@ export default {
 				ctx.playQueuedSounds();
 			});
 		},
-		playAudio(key) {
-			const sound = this.sounds[key];
-			if (sound.isPlaying) return;
-
-			const isMusicPlaying = this.sounds.some((sound) => sound.isPlaying);
-			if (isMusicPlaying) {
-				sound.isQueued = true;
-			} else {
-				sound.audio.play();
-				sound.isPlaying = true;
-				this.replayOnEnd(sound.audio);
-				this.setNewLeader(sound);
-			}
+		replayOnEnd(audio) {
+			audio.addEventListener("ended", () => {
+				audio.play();
+			});
 		},
 		stopAudio(key) {
 			const sound = this.sounds[key];
@@ -170,10 +149,22 @@ export default {
 			if (sound.isLeader) {
 				sound.isLeader = false;
 				this.findNewLeader();
-				const isMusicPlaying = this.sounds.some((sound) => sound.isPlaying);
-				if (!isMusicPlaying) {
+				this.isMusicPlaying = this.sounds.some((sound) => sound.isPlaying);
+				if (!this.isMusicPlaying) {
 					this.playQueuedSounds();
 				}
+			}
+		},
+		playAudio(key) {
+			const sound = this.sounds[key];
+			if (this.isMusicPlaying || this.isMusicPaused) {
+				sound.isQueued = true;
+			} else {
+				sound.audio.play();
+				sound.isPlaying = true;
+				this.replayOnEnd(sound.audio);
+				this.setNewLeader(sound);
+				this.isMusicPlaying = true;
 			}
 		},
 	},
@@ -183,6 +174,7 @@ export default {
 			audio: new Audio(sound.src),
 			isPlaying: false,
 			isQueued: false,
+			isLeader: false,
 		}));
 	},
 };
