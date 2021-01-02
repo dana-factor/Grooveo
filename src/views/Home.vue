@@ -108,7 +108,6 @@ export default {
 		},
 		setNewLeader(sound) {
 			sound.isLeader = true;
-			console.log("new leader set:", sound.title);
 			this.releaseQueueOnEnd(sound.audio);
 		},
 		findNewLeader() {
